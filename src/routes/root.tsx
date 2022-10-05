@@ -1,12 +1,10 @@
 import { useRouteError } from "react-router-dom";
 import useSWR from "swr";
+import fetcher from "../lib/fetcher";
 
 type ApiRootResponse = {
   message: string;
 };
-
-const fetcher = (input: RequestInfo | URL, init?: RequestInit | undefined) =>
-  fetch(input, init).then((res) => res.json());
 
 export function ErrorPage() {
   const error = useRouteError() as Error;
