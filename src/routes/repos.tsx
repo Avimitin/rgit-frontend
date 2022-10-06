@@ -28,28 +28,35 @@ export default function Repos({ config }: ReposProps) {
   if (error) throw new Error(`fail to fetch repos api: ${error}`);
   if (!data) return <div>Loading...</div>;
 
-  const table_items = data.dirs.map((repo) => {
+  const items = data.dirs.map((repo) => {
     return (
-      <tr key={repo.name}>
-        <td>{repo.name}</td>
-        <td>{repo.head}</td>
-        <td>{repo.project_info.author}</td>
-        <td>{repo.project_info.description}</td>
-      </tr>
+      <li key={repo.name}>
+        <RepoCard repoInfo={repo} />
+      </li>
     );
   });
 
+  return <ul className="card-container">{items}</ul>;
+}
+
+interface RepoCardProps {
+  repoInfo: RepoInfo;
+}
+
+function RepoCard({ repoInfo }: RepoCardProps) {
   return (
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Commit Head</th>
-          <th scope="col">Author</th>
-          <th scope="col">Description</th>
-        </tr>
-      </thead>
-      <tbody>{table_items}</tbody>
-    </table>
+    <div className="card-frame">
+      <img
+        className="card-thumbnail"
+        src="https://github.com/identicons/avimitin.png"
+      />
+      <span className="card-title">{repoInfo.name}</span>
+      <p className="card-desc">{repoInfo.project_info.description}</p>
+      <img className="card-avatar"></img>
+      <p className="card-footer">
+        <b>{repoInfo.project_info.author}</b> last commit on Oct 6, 2022
+        <code>{repoInfo.head.slice(0, 8)}</code>
+      </p>
+    </div>
   );
 }
