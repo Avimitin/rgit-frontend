@@ -1,5 +1,6 @@
 import { useRouteError } from "react-router-dom";
 import useSWR from "swr";
+import { Configuration } from "../config";
 import fetcher from "../lib/fetcher";
 
 type ApiRootResponse = {
@@ -18,9 +19,13 @@ export function ErrorPage() {
   );
 }
 
-export default function Root() {
+interface RootProps {
+  config: Configuration;
+}
+
+export default function Root({ config }: RootProps) {
   const { data, error } = useSWR<ApiRootResponse>(
-    "http://localhost:18080",
+    config.backend.base_url,
     fetcher
   );
 

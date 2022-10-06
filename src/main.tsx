@@ -4,16 +4,19 @@ import "./index.css";
 import Root, { ErrorPage as RootErrorPage } from "./routes/root";
 import Repos from "./routes/repos";
 import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
+import createConfig from "./config";
+
+const config = createConfig();
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
+    element: <Root config={config} />,
     errorElement: <RootErrorPage />,
   },
   {
     path: "/repos",
-    element: <Repos />,
+    element: <Repos config={config} />,
   },
 ]);
 

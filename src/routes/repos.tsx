@@ -1,5 +1,6 @@
 import useSWR from "swr";
 import fetcher from "../lib/fetcher";
+import { Configuration } from "../config";
 
 interface RepoInfo {
   name: string;
@@ -14,9 +15,13 @@ interface ApiReposResponse {
   dirs: Array<RepoInfo>;
 }
 
-export default function Repos() {
+interface ReposProps {
+  config: Configuration;
+}
+
+export default function Repos({ config }: ReposProps) {
   const { data, error } = useSWR<ApiReposResponse>(
-    "http://localhost:18080/api/v1/repos",
+    config.backend.repos_url,
     fetcher
   );
 
