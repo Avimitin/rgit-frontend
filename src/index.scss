@@ -29,7 +29,8 @@ ul {
         bottom: 20px;
         background-color: #ddd;
         background-position: center, center;
-        background-size: 80%;
+        background-size: cover;
+        background-repeat: no-repeat;
         box-shadow: 0 1px 10px rgba(0, 0, 0, .5);
       }
 
