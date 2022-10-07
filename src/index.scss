@@ -55,7 +55,20 @@ ul {
   }
 
   .card-footer {
-    padding: 10px
+    padding: 10px;
+
+    sub {
+      font-size: 12px;
+    }
+
+    .card-commit {
+      margin-left: 4px;
+      font-size: 8px;
+      background: #a2a2a2;
+      color: #3e3e75;
+      padding: 1px;
+      border-radius: 3px;
+    }
   }
 }
 

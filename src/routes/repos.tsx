@@ -67,8 +67,10 @@ function RepoCard({ repoInfo }: RepoCardProps) {
       </div>
       <div className="card-footer">
         <img className="card-avatar"></img>
+        <sub>
         <b>{repoInfo.project_info.author}</b> last commit on Oct 6, 2022
-        <code>{repoInfo.head.slice(0, 8)}</code>
+        </sub>
+        <code className="card-commit">#{repoInfo.head.slice(0, 8)}</code>
       </div>
     </div>
   );
