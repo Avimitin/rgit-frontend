@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import fetcher from "../lib/fetcher";
+import fetcher, { fakeFetcher } from "../lib/fetcher";
 import { Configuration } from "../config";
 
 interface RepoInfo {
@@ -8,6 +8,7 @@ interface RepoInfo {
   project_info: {
     author: string;
     description: string;
+    thumbnail?: string;
   };
 }
 
@@ -20,10 +21,15 @@ interface ReposProps {
 }
 
 export default function Repos({ config }: ReposProps) {
-  const { data, error } = useSWR<ApiReposResponse>(
-    config.backend.repos_url,
-    fetcher
-  );
+  let data, error;
+  if (import.meta.env.DEV) {
+    ({ data, error } = useSWR<ApiReposResponse>("/api/v1/repos", fakeFetcher));
+  } else {
+    ({ data, error } = useSWR<ApiReposResponse>(
+      config.backend.repos_url,
+      fetcher
+    ));
+  }
 
   if (error) throw new Error(`fail to fetch repos api: ${error}`);
   if (!data) return <div>Loading...</div>;
@@ -44,19 +50,26 @@ interface RepoCardProps {
 }
 
 function RepoCard({ repoInfo }: RepoCardProps) {
+  const thumbnailUrl =
+    repoInfo.project_info.thumbnail !== undefined ?
+      repoInfo.project_info.thumbnail
+      :
+      "https://github.com/identicons/avimitin.png";
   return (
     <div className="card-frame">
-      <img
-        className="card-thumbnail"
-        src="https://github.com/identicons/avimitin.png"
-      />
-      <span className="card-title">{repoInfo.name}</span>
-      <p className="card-desc">{repoInfo.project_info.description}</p>
-      <img className="card-avatar"></img>
-      <p className="card-footer">
+      <div className="card-body">
+        <div
+          className="card-thumbnail"
+          style={{ backgroundImage: `url("${thumbnailUrl}")` }}
+        />
+        <span className="card-title">{repoInfo.name}</span>
+        <p className="card-desc">{repoInfo.project_info.description}</p>
+      </div>
+      <div className="card-footer">
+        <img className="card-avatar"></img>
         <b>{repoInfo.project_info.author}</b> last commit on Oct 6, 2022
         <code>{repoInfo.head.slice(0, 8)}</code>
-      </p>
+      </div>
     </div>
   );
 }
